@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const async = require("async");
+
 
 const readFilesSyncRecursively = (dir) => {
     const results = [];
@@ -14,22 +16,94 @@ const readFilesSyncRecursively = (dir) => {
             results.push(...readFilesSyncRecursively(filePath));
         } else if (stat && stat.isFile()) {
             const content = fs.readFileSync(filePath, 'utf8');
-            results.push({ path: filePath/*, content*/ , file });
+            console.log(file);
+            results.push({ path: filePath, file });
         }
     }
 
     return results;
 }
 
-// Usage example:
-const patternDir = path.join(__dirname, '../lib/patterns');
-//console.log(__dirname)
 
 
 const filesWithContent = readFilesSyncRecursively(patternDir);
-console.log(filesWithContent);
 
-filesWithContent.forEach(({ path, content }) => {
-    //console.log(`--- ${path} ---`);
-    //console.log(content);
+
+const doLoadDefault = (loadModules, callback) => {
+    return fs.readdir(patternsDir, (err, files) => {
+        if (err) {
+            return callback(err);
+        }
+
+        const result = new GrokCollection();
+
+        return async.parallel(
+            files.filter(file => {
+                return !loadModules || !loadModules.length || loadModules.indexOf(file) !== -1;
+            }).map(file => {
+                return callback => {
+                    return result.load(path.join(patternsDir, file), callback);
+                };
+            }),
+
+            err => {
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(null, result);
+            });
+    });
+};
+
+
+
+
+
+const patternDir = path.join(__dirname, '../lib/patterns');
+
+
+const readFilesAsyncRecursively = (patternDir, done) => {
+    let results = [];
+    fs.readdir(patternDir , { withFileTypes: true } , (err, files) => {
+        if (err) {
+            return done(err);
+        }
+        async.each(files,
+            (file, callback) => {
+
+                const fullPath = path.join(patternDir, file.name);
+                if (file.isDirectory()) {
+                    readFilesAsyncRecursively(fullPath, (err,res) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        results = results.concat(res);
+                        callback()
+                    })
+                } else if (file.isFile()) {
+                    results.push({ path: file.path, file : file.name })
+                    callback()
+                } else {
+                    callback()
+                }
+            },
+            err => {
+                if (err) {
+                    return done(err);
+                }
+                done(null, results);
+            }
+        )
+    })
+}
+
+readFilesAsyncRecursively(patternDir , (err , done) => {
+    if (err) {
+        console.error('Error reading files:', err);
+    } else {
+        console.log('All files:', done);
+    }
 });
+
+
