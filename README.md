@@ -14,7 +14,7 @@ More details about usage and implementation here https://memz.co/parsing-log-fil
 This is a templating library that helps reusing existing regular expressions and constructing new, more complex one. The primary goal was to help parsing and transforming plain text logs into JSON objects (one line => one object) based on provided template. 
 
 ## Install
-Install locally: `npm install grok-js`.
+Install locally: `npm install grok-parser-js`.
 
 ## Quick start
 Following simple snippet
@@ -22,7 +22,7 @@ Following simple snippet
 const p = '%{IP:client} \\[%{TIMESTAMP_ISO8601:timestamp}\\] "%{WORD:method} %{URIHOST:site}%{URIPATHPARAM:url}" %{INT:code} %{INT:request} %{INT:response} - %{NUMBER:took} \\[%{DATA:cache}\\] "%{DATA:mtag}" "%{DATA:agent}"';
 const str = '203.35.135.165 [2016-03-15T12:42:04+11:00] "GET memz.co/cloud/" 304 962 0 - 0.003 [MISS] "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"';
 
-require('grok-js').loadDefault((err, patterns) => {
+require('grok-parser-js').loadDefault((err, patterns) => {
   if (err) {
     console.error(err);
     return;
@@ -129,3 +129,10 @@ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
 WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+
+## at the end i put some usefull  commands that use in this project 
+
+```bash
+npm publish --access public
+```
