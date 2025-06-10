@@ -1,10 +1,10 @@
 {
-    "name": "grok-js",
-    "version": "3.3.1",
-    "description": "Regular expression template library inspired by logstash grok filter module",
-    "repository": "https://github.com/honzahommer/grok-js.git",
+    "name": "grok-parser-js",
+    "version": "3.3.2",
+    "description": "Regular expression template library inspired by logstash grok filter module , A Grok pattern parser and matcher for Node.js and CLI . this project Forked From honzahommer/grok-jlA ",
+    "repository": "https://github.com/amirdadipoor/grok-parser-js.git",
     "bugs": {
-        "url": "https://github.com/honzahommer/grok-js/issues"
+        "url": "https://github.com/amirdadipoor/grok-parser-js"
     },
     "main": "lib/",
     "typings": "lib/index.d.ts",
@@ -25,7 +25,9 @@
     "keywords": [
         "regex",
         "grok",
-        "logstash"
+        "parser",
+        "logstash",
+        "log"
     ],
     "author": "Andrey Chausenko",
     "contributors": [
